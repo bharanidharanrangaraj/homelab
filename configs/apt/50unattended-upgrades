@@ -1,0 +1,11 @@
+// /etc/apt/apt.conf.d/50unattended-upgrades: the active (non-comment) lines.
+// Only these repositories update automatically. Third-party repositories
+// (cloudflared, Node.js, Tailscale) do not, so I update those by hand.
+Unattended-Upgrade::Origins-Pattern {
+        "origin=Debian,codename=${distro_codename},label=Debian";
+        "origin=Debian,codename=${distro_codename},label=Debian-Security";
+        "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+        "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
+};
+Unattended-Upgrade::Package-Blacklist {
+};

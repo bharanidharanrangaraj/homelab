@@ -1,0 +1,24 @@
+[Unit]
+Description=IoT Studio worker (MQTT ingest, alerts, automation, email, nightly maintenance)
+After=network.target postgresql.service mosquitto.service iotstudio-backend.service
+Wants=postgresql.service mosquitto.service
+
+[Service]
+Type=simple
+User=iotstudio
+Group=iotstudio
+WorkingDirectory=/opt/iotstudio/current/backend
+EnvironmentFile=/opt/iotstudio/.env
+ExecStart=/opt/iotstudio/venv/bin/python worker.py
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/iotstudio
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

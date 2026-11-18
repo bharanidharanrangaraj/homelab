@@ -1,0 +1,16 @@
+# Never commit secrets, keys, databases or private notes.
+.env
+*.env
+.env.*
+*.json
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_*
+*.sql
+*.sql.gz
+*.log
+private/
+homelab-private/

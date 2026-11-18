@@ -1,0 +1,19 @@
+[Unit]
+Description=Invio frontend (Bun/SvelteKit)
+After=network.target invio-backend.service
+Requires=invio-backend.service
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/opt/invio/frontend
+EnvironmentFile=/opt/invio/.env
+Environment=PORT=<web-port>
+Environment=HOST=0.0.0.0
+Environment=BODY_SIZE_LIMIT=10M
+ExecStart=/usr/local/bin/bun --no-install build/index.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

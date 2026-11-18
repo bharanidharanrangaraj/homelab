@@ -1,0 +1,42 @@
+# systemd unit for Content Hub. Installed by deploy/install.sh as /etc/systemd/system/content-hub.service.
+[Unit]
+Description=Content Hub (team content planner)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=contenthub
+Group=contenthub
+WorkingDirectory=/opt/content-hub
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node server/index.js
+Restart=on-failure
+RestartSec=5
+# Node needs a little time to finish requests and close the database.
+TimeoutStopSec=15
+
+# Hardening: the service can only write its data folder, can't gain privileges and sees a minimal system.
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/content-hub/storage
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

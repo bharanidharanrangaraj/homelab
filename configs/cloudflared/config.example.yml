@@ -1,0 +1,16 @@
+# Example tunnel config, the same shape as the real ones in /etc/cloudflared/.
+# Real hostnames, ports and the tunnel ID are not published.
+tunnel: <TUNNEL-ID>
+credentials-file: /etc/cloudflared/<TUNNEL-ID>.json
+
+ingress:
+  # sites that nginx serves (static files, reverse proxy, PHP)
+  - hostname: example.com
+    service: http://localhost:80
+  - hostname: classroom.example.com
+    service: http://localhost:80
+  # an app that cloudflared reaches directly
+  - hostname: content.example.com
+    service: http://127.0.0.1:<app-port>
+  # anything else gets a 404
+  - service: http_status:404

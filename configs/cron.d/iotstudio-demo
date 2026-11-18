@@ -1,0 +1,2 @@
+30 3 * * * root /usr/local/bin/iotstudio-demo-reset >> /var/log/iotstudio/demo-reset.log 2>&1
+*/10 * * * * root /usr/local/bin/iotstudio-demo-reset refresh >> /var/log/iotstudio/demo-refresh.log 2>&1

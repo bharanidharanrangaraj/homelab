@@ -1,0 +1,27 @@
+[Unit]
+Description=IoT Studio API (gunicorn)
+After=network.target postgresql.service mosquitto.service
+Wants=postgresql.service mosquitto.service
+
+[Service]
+Type=simple
+User=iotstudio
+Group=iotstudio
+WorkingDirectory=/opt/iotstudio/current/backend
+EnvironmentFile=/opt/iotstudio/.env
+# 3 workers fit a Raspberry Pi 5; the app is I/O bound
+ExecStart=/opt/iotstudio/venv/bin/gunicorn --workers 3 --threads 2 --bind 127.0.0.1:<api-port> --timeout 300 --graceful-timeout 20 --access-logfile - --error-logfile - app:app
+Restart=always
+RestartSec=3
+# hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+# the Code Editor compiler (arduino-cli) keeps board cores and libraries in /opt/arduino ("-" = fine if it does not exist)
+ReadWritePaths=/var/log/iotstudio -/opt/arduino
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
